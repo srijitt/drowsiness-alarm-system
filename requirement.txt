@@ -1,8 +1,8 @@
-numpy
-opencv-python
+dlib==19.24.1
 imutils
-dlib
-streamlit
-scipy
+numpy
+opencv_python
 plyer
 pygame
+scipy
+streamlit
