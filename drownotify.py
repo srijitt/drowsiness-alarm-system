@@ -19,6 +19,7 @@ pygame.mixer.init()
 
 
 # Set up Streamlit app title and description
+st.set_page_config(page_title=":violet[DROWSINESS_IDENTIFIER]", page_icon = "😴")
 st.title(":orange[Sleep Detection Prototype😴]")
 st.caption("_Sleep Well in Bed, Not in the Car,while driving!_")
 
