@@ -14,16 +14,16 @@ from tempfile import NamedTemporaryFile
 
 
 
-# Initialization pygame mixer
+# Initialization of pygame mixer
 pygame.mixer.init()
 
 
-# Set up Streamlit app title and description
+# Setting up the Streamlit app title and description
 st.set_page_config(page_title=":violet[DROWSINESS_IDENTIFIER]", page_icon = "😴")
 st.title(":orange[Sleep Detection Prototype😴]")
 st.caption("_Sleep Well in Bed, Not in the Car,while driving!_")
 
-# Create placeholders for buttons and video frame
+# placeholders for buttons and video frame
 start_button = st.button(":green[START STREAMING]")
 b = st.button(":red[STOP THE MUSIC]")
 
@@ -35,13 +35,13 @@ drowsy_flag = False
 drowsy_start_time = None
 
 
-# Computes distance between 2 points
+# Computing the distance between 2 points
 def compute(ptA, ptB):
     dist = np.linalg.norm(ptA - ptB)
     return dist
 
 
-# Checks whether blinked or not
+# Checking whether the eye is blinked or not
 def blinked(a, b, c, d, e, f):
     up = compute(b, d) + compute(c, e)
     down = compute(a, f)
@@ -57,13 +57,13 @@ def blinked(a, b, c, d, e, f):
 
 uploaded_file = st.file_uploader("Upload an audio file to be used as an alarm", type=["mp3","wav","mp4"])
 
-# Create a placeholder for the audio player
+# Creating a placeholder for the audio player
 audio_placeholder = st.empty()
 
-# Define the temporary audio file path
+# Defining the temporary audio file path where our audio will be saved
 audio_file_path = None
 
-# Function to play audio
+# Function to play the audio
 def play_audio(audio_file_path):
     pygame.mixer.music.load(audio_file_path)
     pygame.mixer.music.play()
@@ -83,14 +83,14 @@ def notify():
         play_audio(audio_file_path)  # Play the audio notification
         time.sleep(3600)  # Wait for 1 hour before showing the notification again
 
-# Check if an audio file is uploaded
+# Checking if an audio file is uploaded
 if uploaded_file:
     # Save the uploaded audio file as a temporary file
     with NamedTemporaryFile(delete=False, suffix=".mp3") as temp_audio_file:
         temp_audio_file.write(uploaded_file.read())
         audio_file_path = temp_audio_file.name
 
-    # Display the audio player
+    # Displaying the audio player
     audio_placeholder.audio(open(audio_file_path, "rb").read(), format="audio/mp3")
 
 
@@ -117,6 +117,7 @@ def detect_drowsiness():
     # Initializing the face detector and landmark detector
     detect = dlib.get_frontal_face_detector()
     predict = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
+    # initializing the variables with 0
     sleep = 0
     drowsy = 0
     active = 0
@@ -125,7 +126,7 @@ def detect_drowsiness():
 
     face_frame = []
 
-    # Loop to continuously capture and process frames
+    # Loop to continuously capture and process the frames
     while True:
         _, frame = cap.read()
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -177,9 +178,9 @@ def detect_drowsiness():
 
             cv2.putText(frame, status, label_position, cv2.FONT_HERSHEY_SIMPLEX, 0.7, color, 2)
 
-            check_drowsiness(status)  # Check for drowsiness
+            check_drowsiness(status)  # Checking for drowsiness
 
-        # Convert the frame to RGB format for displaying in Streamlit
+        # Converting the frame to RGB format for displaying in Streamlit
         frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
         # Display the frame in the Streamlit app
@@ -191,14 +192,15 @@ def detect_drowsiness():
             cv2.destroyAllWindows()
             
 
-# Start streaming when the Start button is pressed
+# Starting the streaming when the Start button is pressed
 if start_button:
     stop_button = st.button(":red[STOP STREAMING]")
     if stop_button:
         pygame.mixer.music.stop()
     detect_drowsiness()
 if b:
-    pygame.mixer.music.stop()
+    pygame.mixer.music.stop()#ending the music player
 else:
     pass
+#end of of code
 
