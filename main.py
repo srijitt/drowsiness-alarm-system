@@ -15,8 +15,8 @@ pygame.mixer.init()
 
 # Setting up the Streamlit app title and description
 st.set_page_config(page_title="Drowsiness Detection", page_icon="😴")
-st.title(":orange[Sleep Detection Prototype😴]")
-st.caption("_Sleep Well in Bed, Not in the Car,while driving!_")
+st.title(":orange[Sleep Detection Prototype]")
+st.caption("_Sleep Well in Bed, Not in the Car!_")
 
 # placeholders for buttons and video frame
 start_button = st.button(":green[START STREAMING]")
