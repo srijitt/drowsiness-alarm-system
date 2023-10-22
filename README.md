@@ -30,7 +30,7 @@ This Drowsiness Detection System is a Python-based project using dlib and OpenCV
 - NumPy
 - A compatible webcam or video feed source.
 - mediaplayer source
-- 
+- a mini computer for running the source code
 
 ## Installation
 
