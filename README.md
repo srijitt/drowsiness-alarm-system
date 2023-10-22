@@ -19,6 +19,8 @@ This Drowsiness Detection System is a Python-based project using dlib and OpenCV
 - Face and eye tracking for accurate detection.
 - Easy integration with existing systems.
 - Can be implemented with an alarm system, in say, automobiles.
+- prompts to run the model without any hassle
+  
 
 ## Requirements
 
@@ -27,6 +29,8 @@ This Drowsiness Detection System is a Python-based project using dlib and OpenCV
 - dlib
 - NumPy
 - A compatible webcam or video feed source.
+- mediaplayer source
+- 
 
 ## Installation
 
@@ -36,7 +40,7 @@ This Drowsiness Detection System is a Python-based project using dlib and OpenCV
    
 2. Install the required dependencies:
    ```bash
-   pip install opencv-python dlib numpy
+   pip install -r requirements.txt 
 
 3. Run the Drowsiness Detection System:
    ```bash
@@ -44,8 +48,11 @@ This Drowsiness Detection System is a Python-based project using dlib and OpenCV
 
 ## Applications
 - **Driver Monitoring Systems (DMS)**: Implementing the drowsiness detection system in vehicles can help prevent accidents caused by driver fatigue. It can alert drivers when they are becoming drowsy or distracted, potentially saving lives on the road.
+- The driver will walk up if the camers sense sleepiness or drowsiness through it's feed.
+- it will wake up the driver by taking over the whole car music system and thereby turning on a high volume alarm or audio with a notification or message to their relatives or acquaintences, so that they can be alerted properly.
 
 - **Industrial Safety**: In industrial settings where heavy machinery is operated, the system can be used to monitor the alertness of workers. It can trigger alarms or safety measures when a worker shows signs of drowsiness, reducing the risk of accidents.
+- **Personal well being**: Students can use this system to make theem awake at night before the exams, so that if they get asleep, this sytem can wake them up, they just have to install this repo and then the libraries, and all the work will get done automatcially.
 
 - **Public Transportation**: Drowsiness detection can be integrated into public transportation systems to ensure that bus and train drivers remain alert during their shifts, improving passenger safety.
 
