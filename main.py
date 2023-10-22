@@ -179,7 +179,11 @@ def detect_drowsiness(cap):
 
         
 
-
+if stop_music:
+    pygame.mixer.music.stop()
+else:
+    pass
+    
 # Checking if an audio file is uploaded
 if uploaded_file:
     # Save the uploaded audio file as a temporary file
@@ -193,7 +197,7 @@ if uploaded_file is None:
     st.warning("UPLOAD AN AUDIO FILE TO BE USED AS AN ALARM")
     while uploaded_file is None:
         time.sleep(10)
-        st.toast(":red[UPLOAD AN AUDIO FILE]")
+        st.toast(":orange[UPLOAD AN AUDIO FILE]")
 else:
     st.success("AUDIO FILE UPLOADED SUCCESSFULLY")
     
@@ -216,11 +220,3 @@ if stop_button:
     cap = cv2.VideoCapture(1)
     #detect_drowsiness(cap)
     
-if stop_music:
-    pygame.mixer.music.stop()
-    
-
-
-
-
-
