@@ -1,14 +1,25 @@
-import cv2
-import numpy as np
-from imutils import face_utils
-import dlib
-import scipy.io.wavfile as wav
-import streamlit as st
-from plyer import notification
-import time
-import pygame
-import os
-from tempfile import NamedTemporaryFile
+import cv2 # OpenCV library for computer vision tasks
+
+import numpy as np # NumPy for numerical computations and working with arrays
+
+from imutils import face_utils # Imutils, a set of convenience functions for OpenCV
+
+import dlib # Dlib, a toolkit for machine learning and computer vision
+
+import scipy.io.wavfile as wav # SciPy library for scientific and technical computing
+
+import streamlit as st # Streamlit, a Python library for creating web applications
+
+from plyer import notification # Plyer, a cross-platform API for various features like notifications
+
+import time # Time module for time-related operations
+
+import pygame # Pygame, a library for multimedia applications like audio playback
+
+import os # OS module for interacting with the operating system
+
+from tempfile import NamedTemporaryFile # Tempfile module for creating and handling temporary files
+
 
 # Initialization of pygame mixer
 pygame.mixer.init()
