@@ -1,10 +1,12 @@
-import cv2  # OpenCV for computer vision tasks
+import cv2  # OpenCV library for computer vision tasks
 
 import numpy as np  # NumPy for numerical computations and working with arrays
 
 from imutils import face_utils  # Imutils, a set of convenience functions for OpenCV
 
 import dlib  # Dlib, a toolkit for machine learning and computer vision
+
+import scipy.io.wavfile as wav  # SciPy library for scientific and technical computing
 
 import streamlit as st  # Streamlit, a Python library for creating web applications
 
@@ -16,7 +18,7 @@ import pygame  # Pygame, a library for multimedia applications like audio playba
 
 import os  # OS module for interacting with the operating system
 
-from tempfile import NamedTemporaryFile  # Temple module for creating and handling temporary files
+from tempfile import NamedTemporaryFile  # Tempfile module for creating and handling temporary files
 
 # Initialization of pygame mixer
 pygame.mixer.init()
@@ -81,8 +83,8 @@ def play_audio(audio_file_path):
 def notify():
     for _ in range(5):  # Play the notification 5 times
         notification.notify(
-            title="Drowsiness Detected",
-            message="Driver seems to be Drowsy, Please wake up",
+            title="WAKE UP! WAKE UP!",
+            message="STOP THE CAR, STOP THE CAR",
             timeout=10
         )
         play_audio(audio_file_path)  # Play the audio notification
@@ -224,4 +226,5 @@ else:
 if stop_button:
     cap.release()
     cv2.destroyAllWindows()
+    cap = cv2.VideoCapture(1)
     # detect_drowsiness(cap)
