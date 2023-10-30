@@ -25,8 +25,8 @@ pygame.mixer.init()
 
 # Setting up the Streamlit app title and description
 st.set_page_config(page_title="Drowsiness Detection", page_icon="😴")
-st.title(":orange[Sleep Detection Prototype😴]")
-st.caption("_Sleep Well in Bed, Not in the Car,while driving!_")
+st.title(":orange[Driver Drowsiness Detection.]")
+st.caption("_This is a prototype model, which detects drowsiness, through analyzing eye movements._")
 
 video_placeholder = st.empty()
 
@@ -83,8 +83,8 @@ def play_audio(audio_file_path):
 def notify():
     for _ in range(5):  # Play the notification 5 times
         notification.notify(
-            title="WAKE UP! WAKE UP!",
-            message="STOP THE CAR, STOP THE CAR",
+            title="Drowsiness Detected",
+            message="Driver seems drowsy. Please wake up.",
             timeout=10
         )
         play_audio(audio_file_path)  # Play the audio notification
@@ -115,10 +115,10 @@ def detect_drowsiness(cap):
         st.write(":blue[CLICK ON START STREAMING]")
         exit()
 
-        # Initializing the face detector and landmark detector
+    # Initializing the face detector and landmark detector
     detect = dlib.get_frontal_face_detector()
     predict = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
-    # initializing the variables with 0
+    # Initializing the variables with 0
     sleep = 0
     drowsy = 0
     active = 0
@@ -141,7 +141,7 @@ def detect_drowsiness(cap):
             y2 = face.bottom()
 
             cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 1)
-            label_position = (x1, y1 - 10)  # ensures that the text always stays on top of the frame
+            label_position = (x1, y1 - 10)  # ensures that the text always stays on top of your face
 
             landmarks = predict(gray, face)
             landmarks = face_utils.shape_to_np(landmarks)
@@ -206,17 +206,16 @@ if uploaded_file is None:
     st.warning("UPLOAD AN AUDIO FILE TO BE USED AS AN ALARM")
     while uploaded_file is None:
         time.sleep(10)
-        st.toast(":orange[UPLOAD AN AUDIO FILE]")
+        st.toast(":orange[Welcome to the prototype! Upload an audio file to continue]")
 else:
     st.success("AUDIO FILE UPLOADED SUCCESSFULLY")
-
     time.sleep(4)
     # st.toast(":orange[now click on START STREAMING]")
 if not start_button:
     cap = cv2.VideoCapture(1)
     while not start_button:
         time.sleep(5)
-        st.toast(":blue[CLICK ON START STREAMING]")
+        st.toast(":blue[Great! Now click on _START STREAMING_]")
         time.sleep(5)
     # detect_drowsiness(cap)
 else:
