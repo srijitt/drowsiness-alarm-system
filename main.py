@@ -215,13 +215,14 @@ if not start_button:
         time.sleep(5)
         st.toast(":blue[Great! Now click on _START STREAMING_]")
         time.sleep(5)
-    # detect_drowsiness(cap)
+        if stop_button:
+            cap.release()
+            cv2.destroyAllWindows()
+            break
+
 else:
     cap = cv2.VideoCapture(0)
     detect_drowsiness(cap)
-
-if stop_button:
-    cap.release()
-    cv2.destroyAllWindows()
-    cap = cv2.VideoCapture(1)
-    # detect_drowsiness(cap)
+    if stop_button:
+        cap.release()
+        cv2.destroyAllWindows()
