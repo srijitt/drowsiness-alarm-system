@@ -1,35 +1,30 @@
-import cv2 # OpenCV library for computer vision tasks
+import cv2  # OpenCV library for computer vision tasks
 
-import numpy as np # NumPy for numerical computations and working with arrays
+import numpy as np  # NumPy for numerical computations and working with arrays
 
-from imutils import face_utils # Imutils, a set of convenience functions for OpenCV
+from imutils import face_utils  # Imutils, a set of convenience functions for OpenCV
 
-import dlib # Dlib, a toolkit for machine learning and computer vision
+import dlib  # Dlib, a toolkit for machine learning and computer vision
 
-import scipy.io.wavfile as wav # SciPy library for scientific and technical computing
+import streamlit as st  # Streamlit, a Python library for creating web applications
 
-import streamlit as st # Streamlit, a Python library for creating web applications
+from plyer import notification  # Plyer, a cross-platform API for various features like notifications
 
-from plyer import notification # Plyer, a cross-platform API for various features like notifications
+import time  # Time module for time-related operations
 
-import time # Time module for time-related operations
+import pygame  # Pygame, a library for multimedia applications like audio playback
 
-import pygame # Pygame, a library for multimedia applications like audio playback
+import os  # OS module for interacting with the operating system
 
-import os # OS module for interacting with the operating system
-
-from tempfile import NamedTemporaryFile # Tempfile module for creating and handling temporary files
-
+from tempfile import NamedTemporaryFile  # module for creating and handling temporary files
 
 # Initialization of pygame mixer
 pygame.mixer.init()
 
 # Setting up the Streamlit app title and description
 st.set_page_config(page_title="Drowsiness Detection", page_icon="😴")
-st.title(":orange[Sleep Detection Prototype😴]")
-st.caption("_Sleep Well in Bed, Not in the Car,while driving!_")
-
-
+st.title(":orange[Driver Drowsiness Detection.]")
+st.caption("_This is a prototype model, which detects drowsiness, through analyzing eye movements._")
 
 video_placeholder = st.empty()
 
@@ -63,7 +58,7 @@ uploaded_file = st.file_uploader("Upload an audio file to be used as an alarm", 
 
 start_button = st.button(":green[START STREAMING]")
 stop_button = st.button(":red[STOP STREAMING]")
-stop_music  = st.button(":red[STOP MUSIC]")
+stop_music = st.button(":red[STOP MUSIC]")
 
 # Creating a placeholder for the audio player
 audio_placeholder = st.empty()
@@ -86,12 +81,14 @@ def play_audio(audio_file_path):
 def notify():
     for _ in range(5):  # Play the notification 5 times
         notification.notify(
-            title="WAKE UP! WAKE UP!",
-            message="STOP THE CAR, STOP THE CAR",
+            title="Drowsiness Detected",
+            message="Driver seems drowsy. Please wake up.",
             timeout=10
         )
         play_audio(audio_file_path)  # Play the audio notification
         time.sleep(3600)  # Wait for 1 hour before showing the notification again
+
+
 # Function to check for drowsiness
 def check_drowsiness(status):
     global drowsy_flag
@@ -107,19 +104,19 @@ def check_drowsiness(status):
     else:
         drowsy_flag = False
 
+
 # Function to read the camera frame and process it
 def detect_drowsiness(cap):
-    #cap = cv2.VideoCapture(1)
-    #checking  Initialization for the camera
+    # cap = cv2.VideoCapture(1)
+    # checking  Initialization for the camera
     if not cap.isOpened():
         st.write(":blue[CLICK ON START STREAMING]")
-        exit()   
-    
+        exit()
 
     # Initializing the face detector and landmark detector
     detect = dlib.get_frontal_face_detector()
     predict = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
-    # initializing the variables with 0
+    # Initializing the variables with 0
     sleep = 0
     drowsy = 0
     active = 0
@@ -142,7 +139,7 @@ def detect_drowsiness(cap):
             y2 = face.bottom()
 
             cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 1)
-            label_position = (x1, y1 - 10)  # ensures that the text always stays on top of the frame
+            label_position = (x1, y1 - 10)  # ensures that the text always stays on top of your face
 
             landmarks = predict(gray, face)
             landmarks = face_utils.shape_to_np(landmarks)
@@ -188,13 +185,12 @@ def detect_drowsiness(cap):
         # Display the frame in the Streamlit app
         video_placeholder.image(frame_rgb, channels="RGB")
 
-        
 
 if stop_music:
     pygame.mixer.music.stop()
 else:
     pass
-    
+
 # Checking if an audio file is uploaded
 if uploaded_file:
     # Save the uploaded audio file as a temporary file
@@ -208,26 +204,24 @@ if uploaded_file is None:
     st.warning("UPLOAD AN AUDIO FILE TO BE USED AS AN ALARM")
     while uploaded_file is None:
         time.sleep(10)
-        st.toast(":orange[UPLOAD AN AUDIO FILE]")
+        st.toast(":orange[Welcome to the prototype! Upload an audio file to continue]")
 else:
     st.success("AUDIO FILE UPLOADED SUCCESSFULLY")
-    
     time.sleep(4)
-    #st.toast(":orange[now click on START STREAMING]")
-if  not start_button:
+    # st.toast(":orange[now click on START STREAMING]")
+if not start_button:
     cap = cv2.VideoCapture(1)
     while not start_button:
         time.sleep(5)
-        st.toast(":blue[CLICK ON START STREAMING]")
+        st.toast(":blue[Great! Now click on _START STREAMING_]")
         time.sleep(5)
-    #detect_drowsiness(cap)
+    # detect_drowsiness(cap)
 else:
     cap = cv2.VideoCapture(0)
     detect_drowsiness(cap)
-    
+
 if stop_button:
     cap.release()
     cv2.destroyAllWindows()
     cap = cv2.VideoCapture(1)
-    #detect_drowsiness(cap)
-    
+    # detect_drowsiness(cap)
