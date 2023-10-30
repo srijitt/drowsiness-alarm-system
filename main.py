@@ -1,26 +1,30 @@
-import cv2
-import numpy as np
-from imutils import face_utils
-import dlib
-import scipy.io.wavfile as wav
-import streamlit as st
-from plyer import notification
-import time
-import pygame
-import os
-from tempfile import NamedTemporaryFile
+import cv2  # OpenCV for computer vision tasks
+
+import numpy as np  # NumPy for numerical computations and working with arrays
+
+from imutils import face_utils  # Imutils, a set of convenience functions for OpenCV
+
+import dlib  # Dlib, a toolkit for machine learning and computer vision
+
+import streamlit as st  # Streamlit, a Python library for creating web applications
+
+from plyer import notification  # Plyer, a cross-platform API for various features like notifications
+
+import time  # Time module for time-related operations
+
+import pygame  # Pygame, a library for multimedia applications like audio playback
+
+import os  # OS module for interacting with the operating system
+
+from tempfile import NamedTemporaryFile  # Temple module for creating and handling temporary files
 
 # Initialization of pygame mixer
 pygame.mixer.init()
 
 # Setting up the Streamlit app title and description
 st.set_page_config(page_title="Drowsiness Detection", page_icon="😴")
-st.title(":orange[Sleep Detection Prototype]")
-st.caption("_Sleep Well in Bed, Not in the Car!_")
-
-# placeholders for buttons and video frame
-start_button = st.button(":green[START STREAMING]")
-b = st.button(":red[STOP THE MUSIC]")
+st.title(":orange[Sleep Detection Prototype😴]")
+st.caption("_Sleep Well in Bed, Not in the Car,while driving!_")
 
 video_placeholder = st.empty()
 
@@ -52,6 +56,10 @@ def blinked(a, b, c, d, e, f):
 
 uploaded_file = st.file_uploader("Upload an audio file to be used as an alarm", type=["mp3", "wav", "mp4"])
 
+start_button = st.button(":green[START STREAMING]")
+stop_button = st.button(":red[STOP STREAMING]")
+stop_music = st.button(":red[STOP MUSIC]")
+
 # Creating a placeholder for the audio player
 audio_placeholder = st.empty()
 
@@ -73,23 +81,12 @@ def play_audio(audio_file_path):
 def notify():
     for _ in range(5):  # Play the notification 5 times
         notification.notify(
-            title="WAKE UP! WAKE UP!",
-            message="STOP THE CAR, STOP THE CAR",
+            title="Drowsiness Detected",
+            message="Driver seems to be Drowsy, Please wake up",
             timeout=10
         )
         play_audio(audio_file_path)  # Play the audio notification
         time.sleep(3600)  # Wait for 1 hour before showing the notification again
-
-
-# Checking if an audio file is uploaded
-if uploaded_file:
-    # Save the uploaded audio file as a temporary file
-    with NamedTemporaryFile(delete=False, suffix=".mp3") as temp_audio_file:
-        temp_audio_file.write(uploaded_file.read())
-        audio_file_path = temp_audio_file.name
-
-    # Displaying the audio player
-    audio_placeholder.audio(open(audio_file_path, "rb").read(), format="audio/mp3")
 
 
 # Function to check for drowsiness
@@ -109,11 +106,14 @@ def check_drowsiness(status):
 
 
 # Function to read the camera frame and process it
-def detect_drowsiness():
-    # Initialize the camera
-    cap = cv2.VideoCapture(0)
+def detect_drowsiness(cap):
+    # cap = cv2.VideoCapture(1)
+    # checking  Initialization for the camera
+    if not cap.isOpened():
+        st.write(":blue[CLICK ON START STREAMING]")
+        exit()
 
-    # Initializing the face detector and landmark detector
+        # Initializing the face detector and landmark detector
     detect = dlib.get_frontal_face_detector()
     predict = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
     # initializing the variables with 0
@@ -185,21 +185,43 @@ def detect_drowsiness():
         # Display the frame in the Streamlit app
         video_placeholder.image(frame_rgb, channels="RGB")
 
-        # Check if the Stop button is pressed
-        if stop_button:
-            cap.release()
-            cv2.destroyAllWindows()
 
-
-# Starting the streaming when the Start button is pressed
-if start_button:
-    stop_button = st.button(":red[STOP STREAMING]")
-    if stop_button:
-        pygame.mixer.music.stop()
-    detect_drowsiness()
-if b:
-    pygame.mixer.music.stop()  # Music player stops
+if stop_music:
+    pygame.mixer.music.stop()
 else:
     pass
 
-# End
+# Checking if an audio file is uploaded
+if uploaded_file:
+    # Save the uploaded audio file as a temporary file
+    with NamedTemporaryFile(delete=False, suffix=".mp3") as temp_audio_file:
+        temp_audio_file.write(uploaded_file.read())
+        audio_file_path = temp_audio_file.name
+
+    # Displaying the audio player
+    audio_placeholder.audio(open(audio_file_path, "rb").read(), format="audio/mp3")
+if uploaded_file is None:
+    st.warning("UPLOAD AN AUDIO FILE TO BE USED AS AN ALARM")
+    while uploaded_file is None:
+        time.sleep(10)
+        st.toast(":orange[UPLOAD AN AUDIO FILE]")
+else:
+    st.success("AUDIO FILE UPLOADED SUCCESSFULLY")
+
+    time.sleep(4)
+    # st.toast(":orange[now click on START STREAMING]")
+if not start_button:
+    cap = cv2.VideoCapture(1)
+    while not start_button:
+        time.sleep(5)
+        st.toast(":blue[CLICK ON START STREAMING]")
+        time.sleep(5)
+    # detect_drowsiness(cap)
+else:
+    cap = cv2.VideoCapture(0)
+    detect_drowsiness(cap)
+
+if stop_button:
+    cap.release()
+    cv2.destroyAllWindows()
+    # detect_drowsiness(cap)
