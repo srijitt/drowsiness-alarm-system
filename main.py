@@ -6,8 +6,6 @@ from imutils import face_utils  # Imutils, a set of convenience functions for Op
 
 import dlib  # Dlib, a toolkit for machine learning and computer vision
 
-import scipy.io.wavfile as wav  # SciPy library for scientific and technical computing
-
 import streamlit as st  # Streamlit, a Python library for creating web applications
 
 from plyer import notification  # Plyer, a cross-platform API for various features like notifications
@@ -18,7 +16,7 @@ import pygame  # Pygame, a library for multimedia applications like audio playba
 
 import os  # OS module for interacting with the operating system
 
-from tempfile import NamedTemporaryFile  # Tempfile module for creating and handling temporary files
+from tempfile import NamedTemporaryFile  # module for creating and handling temporary files
 
 # Initialization of pygame mixer
 pygame.mixer.init()
